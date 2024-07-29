@@ -70,9 +70,65 @@ def primos():
             
             if divisible:
                 print(i, "es primo")
-        
+
+# /*
+#  * Crea una única función (importante que sólo sea una) que sea capaz
+#  * de calcular y retornar el área de un polígono.
+#  * - La función recibirá por parámetro sólo UN polígono a la vez.
+#  * - Los polígonos soportados serán Triángulo, Cuadrado y Rectángulo.
+#  * - Imprime el cálculo del área de un polígono de cada tipo.
+#  */
+
+def area_poligono(clase):
+    print(clase.area())
+    
+class Polygon:
+    def __init__(self, base, altura):
+        self.base = base
+        self.altura = altura
+
+class Triangulo(Polygon):
+    def __init__(self, base, altura):
+        super().__init__(base, altura)
+    def area(self):
+        return (self.base * self.altura)/2
+    
+class Rectángulo(Polygon):
+    def __init__(self, base, altura):
+        super().__init__(base, altura)
+    def area(self):
+        return (self.base * self.altura)
+    
+class Cuadrado(Polygon):
+    def __init__(self, base, altura):
+        super().__init__(base, altura)
+    def area(self):
+        return (self.base * self.altura)
+
+
+# /*
+#  * Crea un programa que se encargue de calcular el aspect ratio de una
+#  * imagen a partir de una url.
+#  * - Url de ejemplo:
+#  *   https://raw.githubusercontent.com/mouredevmouredev/master/mouredev_github_profile.png
+#  * - Por ratio hacemos referencia por ejemplo a los "16:9" de una
+#  *   imagen de 1920*1080px.
+#  */
+import requests
+import numpy as np
+def ratio_image(url):
+    # Descargar la imagen
+    response = requests.get(url)
+
+    # Convertir los datos de la imagen en un array de NumPy
+    image_array = np.array(bytearray(response.content), dtype=np.uint8)
+
+    print(image_array)
+
 if __name__=="__main__":
     #fizz_buzz() 
     #print(anagram("hola","hola"))
     #fibonacci()
-    primos()
+    #primos()
+    #area_poligono(Triangulo(5, 5))
+    ratio_image("https://raw.githubusercontent.com/mouredevmouredev/master/mouredev_github_profile.png")
