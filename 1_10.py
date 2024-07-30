@@ -115,20 +115,129 @@ class Cuadrado(Polygon):
 #  *   imagen de 1920*1080px.
 #  */
 import requests
-import numpy as np
+from PIL import Image
+from io import BytesIO
 def ratio_image(url):
     # Descargar la imagen
     response = requests.get(url)
 
-    # Convertir los datos de la imagen en un array de NumPy
-    image_array = np.array(bytearray(response.content), dtype=np.uint8)
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Open the image using PIL
+        img = Image.open(BytesIO(response.content))
+        
+        # Get the dimensions
+        width, height = img.size
+        i=2
+        while i <= min(width,height):
+            if width%i==0 and height%i==0:
+                width/=i
+                height/=i
+                i=2
+            i+=1
+        print(f"{int(width)}:{int(height)}")
+            
+    else:
+        print("Error en traer la imagen")
+        
+# /*
+#  * Crea un programa que invierta el orden de una cadena de texto
+#  * sin usar funciones propias del lenguaje que lo hagan de forma automática.
+#  * - Si le pasamos "Hola mundo" nos retornaría "odnum aloH"
+#  */
 
-    print(image_array)
+def invertir(cadena : str):
+    new_cadena = ''
+    for i in range(len(cadena)):
+        new_cadena+=cadena[len(cadena)-1-i]
+    print(new_cadena)
+    
 
+# /*
+#  * Crea un programa que cuente cuantas veces se repite cada palabra
+#  * y que muestre el recuento final de todas ellas.
+#  * - Los signos de puntuación no forman parte de la palabra.
+#  * - Una palabra es la misma aunque aparezca en mayúsculas y minúsculas.
+#  * - No se pueden utilizar funciones propias del lenguaje que
+#  *   lo resuelvan automáticamente.
+#  */
+
+import re 
+
+def count_palabras(cadena : str):
+    patron = r'[^a-zA-Z0-9\s]'
+    cadena = re.sub(patron,'',cadena)
+    list_palabras = cadena.lower().split(" ")
+    diccionario ={}
+    for i in list_palabras:
+        if i not in diccionario:
+            diccionario[i]= 1
+        else:
+            diccionario[i]+=1
+    
+    print(diccionario)
+    
+# /*
+#  * Crea un programa se encargue de transformar un número
+#  * decimal a binario sin utilizar funciones propias del lenguaje que lo hagan directamente.
+#  */
+
+def decimal_a_binario(numero):
+    if numero == 0:
+        return "0"
+    
+    binario = ""
+    while numero > 0:
+        binario = str(numero % 2) + binario
+        numero //= 2
+    
+    print(binario)
+
+
+# /*
+#  * Crea un programa que sea capaz de transformar texto natural a código
+#  * morse y viceversa.
+#  * - Debe detectar automáticamente de qué tipo se trata y realizar
+#  *   la conversión.
+#  * - En morse se soporta raya "—", punto ".", un espacio " " entre letras
+#  *   o símbolos y dos espacios entre palabras "  ".
+#  * - El alfabeto morse soportado será el mostrado en
+#  *   https://es.wikipedia.org/wiki/Código_morse.
+#  */
+ 
+def texto_a_morse(texto : str):
+    # Diccionario de código Morse
+    morse_dict = {
+        'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
+        'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
+        'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
+        'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+        'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---',
+        '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...',
+        '8': '---..', '9': '----.', ' ': ' '
+    }
+    
+    patron = r'[^a-zA-Z0-9\s]'
+    texto = re.sub(patron,'',texto)
+    texto = texto.upper()
+    print(texto)
+    texto_morse = ""
+    for i in texto:
+        if i==" ":
+            texto_morse = texto_morse + "  "
+        else:
+            texto_morse = texto_morse + morse_dict[i]
+    print(texto_morse)
+        
+    #print(new_cadena)
 if __name__=="__main__":
     #fizz_buzz() 
     #print(anagram("hola","hola"))
     #fibonacci()
     #primos()
     #area_poligono(Triangulo(5, 5))
-    ratio_image("https://raw.githubusercontent.com/mouredevmouredev/master/mouredev_github_profile.png")
+    #ratio_image("https://i.blogs.es/0ca9a6/aa/1366_2000.jpeg")
+    #invertir("Hola mundo")
+    #count_palabras("Hola, $/)Hola hola que (/&/mas como estan que")
+    #decimal_a_binario(2)
+    texto_a_morse("Hola")
