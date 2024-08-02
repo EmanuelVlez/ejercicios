@@ -1,0 +1,33 @@
+name: Stats
+
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Script
+        run: python 1_10.py
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Run script
+          commit_user_name: EmanuelVlez
+          commit_user_email: emanuelvelezvs@gmail.com
+          commit_author: EmanuelVlez
+
+        
